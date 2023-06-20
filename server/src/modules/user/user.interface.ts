@@ -1,11 +1,11 @@
 export interface CreateUserData {
   name: string
   email: string
-  phoneNumber: string
+  phone_number: string
   password: string
 }
 
 export interface LoginData {
-  phoneNumber: string
+  phone_number: string
   password: string
 }

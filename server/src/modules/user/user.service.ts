@@ -1,11 +1,14 @@
-
-import { bcryptPassword, generateToken, verifyPassword } from '../../utils/auth-utils';
+import {
+  bcryptPassword,
+  generateToken,
+  verifyPassword,
+} from '../../utils/auth-utils'
 import { CreateUserData, LoginData } from './user.interface'
 import UserModel from './user.model'
 
 const createUser = async (createUserData: CreateUserData) => {
-  const { phoneNumber, password, name } = createUserData
-  const user = await UserModel.findOne({ phoneNumber })
+  const { phone_number, password, name } = createUserData
+  const user = await UserModel.findOne({ phone_number })
   if (user) {
     throw new Error('User Alredy Exists')
   }
@@ -13,32 +16,32 @@ const createUser = async (createUserData: CreateUserData) => {
 
   return await UserModel.create({
     name,
-    phoneNumber,
+    phone_number,
     password: hashedPassword,
   })
 }
 
 const userLogin = async (loginData: LoginData) => {
-  const { phoneNumber,password } = loginData
-  
-  const user = await UserModel.findOne({ phoneNumber })
+  const { phone_number, password } = loginData
+
+  const user = await UserModel.findOne({ phone_number })
   if (!user) {
-    throw new Error('User Alredy Exists')
+    throw new Error('User Not Found')
   }
   const passwordMatch = await verifyPassword(password, user.password)
   if (!passwordMatch) {
     throw new Error('Invalid Password')
   }
 
-  return ({
-    _id:user._id,
+  return {
+    _id: user._id,
     name: user.name,
-    phoneNumber: user.phoneNumber,
+    phone_number: user.phone_number,
     token: generateToken(String(user._id)),
-  })
+  }
 }
 
 export const userService = {
   createUser,
-  userLogin
+  userLogin,
 }
