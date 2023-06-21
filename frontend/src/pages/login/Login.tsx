@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../../features/auth/authSlice";
+import { login } from "../../features/auth/authSlice";
 import { Box, TextField, Button } from "../../utils/uiCore";
 import { useStyles } from "./style";
 import { signInValidation } from "../../utils/formikValidation";
@@ -9,8 +9,6 @@ import { Dispatch, useEffect } from "react";
 import { paths } from "../../path/path";
 import { showToasterError } from "../../utils/showToaster";
 import { LoginData } from "./login.interface";
-
-
 
 export const Login = () => {
   const classes = useStyles();
@@ -26,15 +24,14 @@ export const Login = () => {
   };
 
   useEffect(() => {
-    if (user || isSuccess) {
-      navigate(paths.home);
+    if (user) {
+      navigate(paths.list_order);
     }
     if (isError) {
       showToasterError(error);
     }
-
-    dispatch(reset());
   }, [user, isLoading, isError, isSuccess, error]);
+
 
   return (
     <Box className={classes.registerMain}>
@@ -45,6 +42,7 @@ export const Login = () => {
           validationSchema={signInValidation}
           onSubmit={handleSubmit}>
           <Form>
+            <Box className = {classes.errorText}>{isError? error :"" }</Box>
             <Box className={classes.textField}>
               <Field name="phone_number">
                 {({ field }: any) => (

@@ -28,5 +28,8 @@ export const useStyles = makeStyles(() => ({
   },
   errorComponent:{
           color:"red"
+  },
+  errorText:{
+    color:"red"
   }
 }))

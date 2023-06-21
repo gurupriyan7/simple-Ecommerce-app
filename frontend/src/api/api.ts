@@ -14,7 +14,7 @@ export const postApi = async ({
   body,
   authToken = true,
 }: PostApiProps) => {
-  try {
+
     const userData = getLocalStorageItem('user')
     const config: AxiosRequestConfig = {
       headers: {
@@ -34,9 +34,7 @@ export const postApi = async ({
     )
 
     return response?.data
-  } catch (error) {
-    showToasterError(error)
-  }
+ 
 }
 
 export const getApi = async (url: string, authToken?: boolean) => {

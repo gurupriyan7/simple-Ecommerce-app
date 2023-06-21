@@ -11,7 +11,7 @@ const createUser = async (req: Request, res: Response) => {
       status: 201,
     })
   } catch (error:any) {
-    return responseUtils.error({ res, error })
+    return responseUtils.error({ res, error,statusCode:400 })
   }
 }
 
@@ -23,7 +23,7 @@ const userLogin = async (req: Request, res: Response) => {
       status: 200,
     })
   } catch (error:any) {
-    return responseUtils.error({ res, error })
+    return responseUtils.error({ res, error,statusCode:400 })
   }
 }
 

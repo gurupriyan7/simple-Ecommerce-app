@@ -1,4 +1,4 @@
-import { postApi } from '../../api/api'
+import { getApi, postApi } from '../../api/api'
 import { OrderData } from '../../pages/add-order/addOrder.interface'
 
 const addOrder = async (orderData: OrderData) => {
@@ -6,8 +6,14 @@ const addOrder = async (orderData: OrderData) => {
   return data
 }
 
+const getOrder = async (user_Id:string)=>{
+  const data = await getApi(`order/get-order/${user_Id}`,true)
+  return data
+}
+
 const orderService = {
   addOrder,
+  getOrder
 }
 
 export default orderService

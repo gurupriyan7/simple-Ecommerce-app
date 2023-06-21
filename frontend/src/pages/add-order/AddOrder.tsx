@@ -37,7 +37,7 @@ export const AddOrder = () => {
   }, [order, isLoading, isError, isSuccess, error]);
 
   return (
-    <Layout>
+    <Layout heading={"Place Order"}>
     <Box className={classes.registerMain}>
       <Box className={classes.signupCard}>
         <Box className={classes.signupHeadding}>Place Order</Box>

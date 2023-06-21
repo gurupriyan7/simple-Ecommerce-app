@@ -18,8 +18,8 @@ const login = async (userData:LoginData)=>{
   if (data) {
     setLocalStorage("user",data?.data)
 
-    return data
   }
+  return data
 }
 
 const authService = {

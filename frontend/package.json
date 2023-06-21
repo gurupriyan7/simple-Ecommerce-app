@@ -10,6 +10,7 @@
     "@mui/material": "^5.13.3",
     "@mui/styles": "^5.13.2",
     "@mui/system": "^5.13.2",
+    "@mui/x-data-grid": "^6.8.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -58,6 +59,6 @@
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
-  "author": "",
+  "author": "Gurupriyan J",
   "license": "ISC"
 }
