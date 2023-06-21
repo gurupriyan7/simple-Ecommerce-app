@@ -1,9 +1,9 @@
-/* eslint-disable no-sequences */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
-// import { RegisterFormData } from '../../pages/register/register.interface'
+import { RegisterFormData } from '../../pages/register/register.interface'
 import { errorMessage } from '../../utils/appUtils'
+import { LoginData } from '../../pages/login/login.interface'
 
 const user =  localStorage.getItem('user') 
 
@@ -18,7 +18,7 @@ const initialState = {
 
 export const register = createAsyncThunk(
   'auth/register',
-  async (user: any, thunkApi) => {
+  async (user: RegisterFormData, thunkApi) => {
     try {
       return await authService.register(user)
     } catch (error:any) {
@@ -29,7 +29,7 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (data:any,thunkApi)=>{
+  async (data:LoginData,thunkApi)=>{
     try {
       return await authService.login(data)
     } catch (error) {
@@ -43,7 +43,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state: any) => {
-      (state.isError = false),
+      ;(state.isError = false),
         (state.isSuccess = false),
         (state.isLoading = false),
         (state.message = '')

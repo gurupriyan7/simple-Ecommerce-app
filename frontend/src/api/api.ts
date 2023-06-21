@@ -1,20 +1,46 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { appConfig } from '../config/appConfig'
 import { getLocalStorageItem } from '../utils/appUtils'
+import { showToasterError } from '../utils/showToaster'
 
-export const postApi = async (url: string, body: any) => {
-  const response = await axios.post(`${appConfig.apiUrl}/${url}`, body, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+interface PostApiProps {
+  url: string
+  body: any
+  authToken?: boolean
+}
 
-  return response?.data
+export const postApi = async ({
+  url = '',
+  body,
+  authToken = true,
+}: PostApiProps) => {
+  try {
+    const userData = getLocalStorageItem('user')
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    if (authToken) {
+      config.headers = {
+        Authorization: `Bearer ${userData?.token}`,
+      }
+    }
+    const response = await axios.post(
+      `${appConfig.apiUrl}/${url}`,
+      body,
+      config,
+    )
+
+    return response?.data
+  } catch (error) {
+    showToasterError(error)
+  }
 }
 
 export const getApi = async (url: string, authToken?: boolean) => {
   const userData = getLocalStorageItem('user')
-  console.log(userData)
 
   const config: AxiosRequestConfig = {
     headers: {

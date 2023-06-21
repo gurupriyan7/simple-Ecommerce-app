@@ -1,9 +1,10 @@
-
 import { postApi } from '../../api/api'
+import { LoginData } from '../../pages/login/login.interface'
+import { RegisterFormData } from '../../pages/register/register.interface'
 import { setLocalStorage } from '../../utils/appUtils'
 
-const register = async (userData: any) => {
-  const data = await postApi("user",userData)
+const register = async (userData: RegisterFormData) => {
+  const data = await postApi({url:"user/add-user",body:userData,authToken:false})
   if (data) {
     setLocalStorage("user",data?.data)
 
@@ -11,8 +12,8 @@ const register = async (userData: any) => {
   }
 }
 
-const login = async (userData:any)=>{
-  const data = await postApi("user/login-user",userData)
+const login = async (userData:LoginData)=>{
+  const data = await postApi({url:"user/login-user",body:userData,authToken:false})
 
   if (data) {
     setLocalStorage("user",data?.data)

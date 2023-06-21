@@ -1,55 +1,76 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../../features/auth/authSlice";
-import { Box, TextField, Button } from "../../utils/uiCore";
+import { addOrder, reset } from "../../features/order/orderSlice";
+import { Box ,TextField, Button} from "../../utils/uiCore";
 import { useStyles } from "./style";
-import { signInValidation } from "../../utils/formikValidation";
+import { orderValidation } from "../../utils/formikValidation";
 import { Dispatch, useEffect } from "react";
 import { paths } from "../../path/path";
-import { showToasterError } from "../../utils/showToaster";
-import { LoginData } from "./login.interface";
+import { toast } from "react-toastify";
+import { OrderData } from "./addOrder.interface";
+import { Layout } from "../../layout";
 
-
-
-export const Login = () => {
+export const AddOrder = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, error } = useSelector(
-    (state: any) => state?.auth
+  const { order, isLoading, isError, isSuccess, error } = useSelector(
+    (state: any) => state?.order
   );
 
-  const handleSubmit = async (values: LoginData) => {
-    dispatch(login(values));
+  const handleSubmit = async (values: OrderData) => {
+    dispatch(addOrder(values));
   };
 
   useEffect(() => {
-    if (user || isSuccess) {
-      navigate(paths.home);
+    if (order || isSuccess) {
+      navigate(paths.add_order);
     }
     if (isError) {
-      showToasterError(error);
+      console.log(error,"error");
+      
+      toast.error(error);
     }
-
-    dispatch(reset());
-  }, [user, isLoading, isError, isSuccess, error]);
+    dispatch(reset())
+  }, [order, isLoading, isError, isSuccess, error]);
 
   return (
+    <Layout>
     <Box className={classes.registerMain}>
       <Box className={classes.signupCard}>
-        <Box className={classes.signupHeadding}>Login</Box>
+        <Box className={classes.signupHeadding}>Place Order</Box>
         <Formik
-          initialValues={{ phone_number: "", password: "" }}
-          validationSchema={signInValidation}
+          initialValues={{ sub_total:"",phone_number:"" }}
+          validationSchema={orderValidation}
           onSubmit={handleSubmit}>
           <Form>
+            <Box className={classes.textField}>
+              <Field name="sub_total">
+                {({ field }: any) => ( 
+                  <TextField
+                    label="Amount"
+                    variant="outlined"
+                    {...field}
+                    fullWidth
+                    error={Boolean(field.value && field.error)}
+                    helperText={field.value && field.error ? field.error : ""}
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                className={classes.errorComponent}
+                name="sub_total"
+                component="Box"
+              />
+            </Box>
+
             <Box className={classes.textField}>
               <Field name="phone_number">
                 {({ field }: any) => (
                   <TextField
-                    label="Phone Number"
+                    label="PhoneNumber"
                     variant="outlined"
                     {...field}
                     fullWidth
@@ -65,38 +86,18 @@ export const Login = () => {
               />
             </Box>
 
-            <Box className={classes.textField}>
-              <Field name="password">
-                {({ field }: any) => (
-                  <TextField
-                    label="Password"
-                    variant="outlined"
-                    type="password"
-                    {...field}
-                    fullWidth
-                    error={Boolean(field.value && field.error)}
-                    helperText={field.value && field.error ? field.error : ""}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                className={classes.errorComponent}
-                name="password"
-                component="Box"
-              />
-            </Box>
-
             <Button
               className={classes.button}
               fullWidth
               type="submit"
               variant="contained"
               color="primary">
-              SignIn
+              Place Order
             </Button>
           </Form>
         </Formik>
       </Box>
     </Box>
+    </Layout>
   );
 };

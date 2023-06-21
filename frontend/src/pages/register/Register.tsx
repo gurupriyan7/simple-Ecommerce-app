@@ -1,55 +1,72 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, reset } from "../../features/auth/authSlice";
-import { Box, TextField, Button } from "../../utils/uiCore";
+import { register, reset } from "../../features/auth/authSlice";
+import { Box ,TextField, Button} from "../../utils/uiCore";
 import { useStyles } from "./style";
-import { signInValidation } from "../../utils/formikValidation";
+import { signupValidation } from "../../utils/formikValidation";
+import { RegisterFormData } from "./register.interface";
 import { Dispatch, useEffect } from "react";
 import { paths } from "../../path/path";
-import { showToasterError } from "../../utils/showToaster";
-import { LoginData } from "./login.interface";
+import { toast } from "react-toastify";
 
-
-
-export const Login = () => {
+export const Register = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, error } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state: any) => state?.auth
   );
 
-  const handleSubmit = async (values: LoginData) => {
-    dispatch(login(values));
+  const handleSubmit = async (values: RegisterFormData) => {
+    dispatch(register(values));
   };
 
   useEffect(() => {
     if (user || isSuccess) {
-      navigate(paths.home);
+      navigate(paths.login);
     }
     if (isError) {
-      showToasterError(error);
+      toast.error(message);
     }
-
-    dispatch(reset());
-  }, [user, isLoading, isError, isSuccess, error]);
+    dispatch(reset())
+  }, [user, isLoading, isError, isSuccess, message]);
 
   return (
     <Box className={classes.registerMain}>
       <Box className={classes.signupCard}>
-        <Box className={classes.signupHeadding}>Login</Box>
+        <Box className={classes.signupHeadding}>Signup</Box>
         <Formik
-          initialValues={{ phone_number: "", password: "" }}
-          validationSchema={signInValidation}
+          initialValues={{ name: "", phone_number: "", password: "" }}
+          validationSchema={signupValidation}
           onSubmit={handleSubmit}>
           <Form>
+            <Box className={classes.textField}>
+              <Field name="name">
+                {({ field }: any) => (
+                  <TextField
+                    label="Name"
+                    variant="outlined"
+                    {...field}
+                    fullWidth
+                    error={Boolean(field.value && field.error)}
+                    helperText={field.value && field.error ? field.error : ""}
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                className={classes.errorComponent}
+                name="name"
+                component="Box"
+              />
+            </Box>
+
             <Box className={classes.textField}>
               <Field name="phone_number">
                 {({ field }: any) => (
                   <TextField
-                    label="Phone Number"
+                    label="PhoneNumber"
                     variant="outlined"
                     {...field}
                     fullWidth
@@ -92,7 +109,7 @@ export const Login = () => {
               type="submit"
               variant="contained"
               color="primary">
-              SignIn
+              Signup
             </Button>
           </Form>
         </Formik>

@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { appConfig } from '../config/appConfig'
 import userModel from '../modules/user/user.model'
+import { responseUtils } from '../utils/response-utils'
 
 const protect = async (
   req: any ,
@@ -24,12 +25,18 @@ const protect = async (
       }
 
       next()
-    } catch (error) {
-      res.status(401).send({message:'Not Authroized'})
+    } catch (error:any) {
+    return  responseUtils.error({res,error,statusCode:401})
+      // res.status(401).json({message:'Not Authroized'})
     }
   }
   if (!token) {
-    res.status(401).send({message:'Not Authorized,No token'})
+  return  responseUtils.error({res,error:{
+      message: 'Not Authorized,No token',
+      name: ''
+    },statusCode:401})
+
+    // res.status(401).json({message:'Not Authorized,No token'})
   }
 }
 
