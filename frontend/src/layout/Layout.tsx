@@ -1,7 +1,6 @@
-
+import { Box } from ".././utils/uiCore";
 import { ReactNode } from "react";
 import { useStyles } from "./style";
-import { Box } from "@mui/material";
 
 interface LayoutProps {
   children: ReactNode;
