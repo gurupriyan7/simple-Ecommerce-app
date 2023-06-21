@@ -10,13 +10,22 @@ import { paths } from "../../path/path";
 import { toast } from "react-toastify";
 import { OrderData } from "./addOrder.interface";
 import { Layout } from "../../layout";
+import { getLocalStorageItem } from "../../utils/appUtils";
 
 export const AddOrder = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const { order, isLoading, isError, isSuccess, error } = useSelector(
+  const userData = getLocalStorageItem('user')
+
+  useEffect(()=>{
+if(!userData){
+navigate(paths.login)
+}
+  },[userData])
+
+  const { order, isLoading, isError, isSuccess, error,isOrderAdded } = useSelector(
     (state: any) => state?.order
   );
 
@@ -25,11 +34,10 @@ export const AddOrder = () => {
   };
 
   useEffect(() => {
-    if (order || isSuccess) {
-      navigate(paths.add_order);
+    if ( isSuccess&& isOrderAdded) {
+      navigate(paths.list_order);
     }
     if (isError) {
-      console.log(error,"error");
       
       toast.error(error);
     }

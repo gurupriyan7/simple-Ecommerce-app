@@ -1,6 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { login } from "../../features/auth/authSlice";
 import { Box, TextField, Button } from "../../utils/uiCore";
 import { useStyles } from "./style";
@@ -9,6 +11,8 @@ import { Dispatch, useEffect } from "react";
 import { paths } from "../../path/path";
 import { showToasterError } from "../../utils/showToaster";
 import { LoginData } from "./login.interface";
+import { getApi } from "../../api/api";
+import { appConfig } from "../../config/appConfig";
 
 export const Login = () => {
   const classes = useStyles();
@@ -32,6 +36,21 @@ export const Login = () => {
     }
   }, [user, isLoading, isError, isSuccess, error]);
 
+  const onGLoginSuccess = (response: any) => {
+    const start = () => {
+      gapi.client.init({
+        clientId: appConfig.GClientId,
+        scope: "",
+      });
+      gapi.load("client:auth2", start);
+    };
+
+    dispatch(login(response?.profileObj));
+  };
+
+  const onLoginFailure = (response: any) => {
+    showToasterError(response);
+  };
 
   return (
     <Box className={classes.registerMain}>
@@ -42,7 +61,7 @@ export const Login = () => {
           validationSchema={signInValidation}
           onSubmit={handleSubmit}>
           <Form>
-            <Box className = {classes.errorText}>{isError? error :"" }</Box>
+            <Box className={classes.errorText}>{isError ? error : ""}</Box>
             <Box className={classes.textField}>
               <Field name="phone_number">
                 {({ field }: any) => (
@@ -92,6 +111,20 @@ export const Login = () => {
               color="primary">
               SignIn
             </Button>
+            <Box className={classes.gButton}>
+              <GoogleLogin
+                clientId={appConfig.GClientId as string}
+                buttonText="SignIn with Google"
+                onSuccess={onGLoginSuccess}
+                onFailure={onLoginFailure}
+                cookiePolicy={"single_host_origin"}
+                prompt="select_account"></GoogleLogin>
+            </Box>
+
+            <Box className={classes.extraText}>
+              You don't have an account?{" "}
+              <NavLink to={paths.register}>Signup</NavLink>
+            </Box>
           </Form>
         </Formik>
       </Box>

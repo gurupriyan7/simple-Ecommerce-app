@@ -9,6 +9,7 @@ export const signInValidation = Yup.object({
 
 export const signupValidation = Yup.object({
   name: Yup.string().required('Name is required'),
+  email: Yup.string().required("Email is required").email('Invalid email address'),
   phone_number: Yup.string()
     .matches(/^\d{10}$/, 'Invalid mobile number')
     .required('Mobile number is required'),

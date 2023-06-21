@@ -28,5 +28,12 @@ export const useStyles = makeStyles(() => ({
   },
   errorComponent:{
           color:"red"
+  },
+  extraText:{
+    fontSize:"1rem",
+    fontWeight:"500",
+    display:"flex",
+    justifyContent:"center",
+    marginTop:"1rem"
   }
 }))

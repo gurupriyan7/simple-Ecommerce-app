@@ -1,6 +1,6 @@
 export interface RegisterFormData {
-          name: string
-          phone_number: string
-          password: string
-        }
-        
+  name: string
+  phone_number: string
+  password: string
+  email: string
+}

@@ -1,4 +1,5 @@
 export interface LoginData {
-  phone_number: string
+  phone_number?: string
   password: string
+  email?:string
 }

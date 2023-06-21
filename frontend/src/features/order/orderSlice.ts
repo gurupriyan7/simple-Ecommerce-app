@@ -13,6 +13,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   error: '',
+  isOrderAdded:false
 }
 
 export const addOrder = createAsyncThunk(
@@ -58,6 +59,7 @@ export const orderSlice = createSlice({
         ;(state.isLoading = false),
           (state.isSuccess = true),
           (state.order = action.payload)
+          state.isOrderAdded = true
       })
       .addCase(addOrder.rejected, (state, action: any) => {
         state.isLoading = false
@@ -65,6 +67,7 @@ export const orderSlice = createSlice({
         state.isSuccess = false
         state.error = action.error
         state.order = []
+        state.isOrderAdded=false
       })
       .addCase(getOrderDetails.pending, (state) => {
         state.isLoading = true

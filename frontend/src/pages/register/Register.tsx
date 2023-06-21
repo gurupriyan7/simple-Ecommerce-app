@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { register, reset } from "../../features/auth/authSlice";
 import { Box ,TextField, Button} from "../../utils/uiCore";
 import { useStyles } from "./style";
@@ -38,7 +38,7 @@ export const Register = () => {
       <Box className={classes.signupCard}>
         <Box className={classes.signupHeadding}>Signup</Box>
         <Formik
-          initialValues={{ name: "", phone_number: "", password: "" }}
+          initialValues={{ name: "", phone_number: "", password: "",email:"" }}
           validationSchema={signupValidation}
           onSubmit={handleSubmit}>
           <Form>
@@ -58,6 +58,25 @@ export const Register = () => {
               <ErrorMessage
                 className={classes.errorComponent}
                 name="name"
+                component="Box"
+              />
+            </Box>
+            <Box className={classes.textField}>
+              <Field name="email">
+                {({ field }: any) => (
+                  <TextField
+                    label="Email"
+                    variant="outlined"
+                    {...field}
+                    fullWidth
+                    error={Boolean(field.value && field.error)}
+                    helperText={field.value && field.error ? field.error : ""}
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                className={classes.errorComponent}
+                name="email"
                 component="Box"
               />
             </Box>
@@ -111,6 +130,7 @@ export const Register = () => {
               color="primary">
               Signup
             </Button>
+            <Box className={classes.extraText}>You already have an account? <NavLink to={paths.login}>SignIn</NavLink></Box>
           </Form>
         </Formik>
       </Box>

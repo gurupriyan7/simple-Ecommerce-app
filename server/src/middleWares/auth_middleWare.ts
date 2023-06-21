@@ -27,7 +27,6 @@ const protect = async (
       next()
     } catch (error:any) {
     return  responseUtils.error({res,error,statusCode:401})
-      // res.status(401).json({message:'Not Authroized'})
     }
   }
   if (!token) {
@@ -36,7 +35,6 @@ const protect = async (
       name: ''
     },statusCode:401})
 
-    // res.status(401).json({message:'Not Authorized,No token'})
   }
 }
 

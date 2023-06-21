@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 
 import { userService } from './user.service'
 import { responseUtils } from '../../utils/response-utils'
+import { LoginType } from '../../constants/enum'
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -17,7 +18,13 @@ const createUser = async (req: Request, res: Response) => {
 
 const userLogin = async (req: Request, res: Response) => {
   try {
-    const data = await userService.userLogin(req.body)
+    let data;
+    if(req?.query?.login_by===LoginType.google){
+       data = await userService.userGLogin(req.body)
+    }else{
+      data = await userService.userLogin(req.body)
+    }
+    
     return responseUtils.success(res, {
       data,
       status: 200,

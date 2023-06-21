@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import { getLocalStorageItem, removeLocalStorage } from "../../utils/appUtils";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../path/path";
 
 interface HeaderProps {
   heading?: string;
@@ -12,6 +14,7 @@ interface HeaderProps {
 
 export const Header = ({ heading }: HeaderProps) => {
   const userData = getLocalStorageItem("user");
+  const navigate = useNavigate()
 
   const handleClick = () => {
     if (userData) {
@@ -19,6 +22,11 @@ export const Header = ({ heading }: HeaderProps) => {
       window.location.reload();
     }
   };
+
+  const handleNavigate = (path:string)=>{
+    navigate(path)
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -32,6 +40,12 @@ export const Header = ({ heading }: HeaderProps) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {heading && heading}
           </Typography>
+          <Button onClick={()=>handleNavigate(paths.list_order)} color="inherit" sx={{ flexGrow: 1 }}>
+            Your Orders
+          </Button>
+          <Button onClick={()=>handleNavigate(paths.add_order)}color="inherit" sx={{ flexGrow: 5 }}>
+            Add Order
+          </Button>
           <Button onClick={handleClick} color="inherit">
             {userData ? "Logout" : ""}
           </Button>

@@ -31,5 +31,17 @@ export const useStyles = makeStyles(() => ({
   },
   errorText:{
     color:"red"
+  },
+  gButton:{
+    width:"rem",
+    display:"flex",
+    justifyContent:"center",
+    marginTop:"1rem"
+  },
+  extraText:{
+    fontSize:"1rem",
+    fontWeight:"500",
+    display:"flex",
+    justifyContent:"center"
   }
 }))
